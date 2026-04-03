@@ -1,5 +1,6 @@
 # ── Netlify configuration for Grey Advisor (Next.js App Router) ──────
-# Docs: https://docs.netlify.com/integrations/frameworks/next-js/overview/
+# Using Netlify's built-in Next.js runtime (no plugin needed for Next 15+)
+# Docs: https://docs.netlify.com/frameworks/next-js/overview/
 
 [build]
   command = "npm run build"
@@ -7,8 +8,4 @@
 
 [build.environment]
   NODE_VERSION = "20"
-
-# Required plugin for Next.js App Router  
-# Pin to latest stable to ensure Next 16 middleware NFT support
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  NEXT_TELEMETRY_DISABLED = "1"
