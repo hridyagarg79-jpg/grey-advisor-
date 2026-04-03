@@ -1,49 +1,27 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  // ── Strip .html extension permanently ──────────────────────────────────────
-  // Fixes: Chrome cached /concierge.html from old Express app → redirect to /concierge
+/**
+ * Edge-compatible middleware.
+ * Supabase session refresh is handled per-request in Server Components
+ * via createServerClient — middleware only does the lightweight .html strip.
+ */
+export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // Strip legacy .html extension (Chrome cached old Express routes)
   if (pathname.endsWith(".html")) {
-    const cleanPath = pathname.slice(0, -5) || "/"; // remove .html
     const url = request.nextUrl.clone();
-    url.pathname = cleanPath;
+    url.pathname = pathname.slice(0, -5) || "/";
     url.search = search;
-    return NextResponse.redirect(url, { status: 308 }); // 308 = Permanent Redirect (keeps POST)
+    return NextResponse.redirect(url, { status: 308 });
   }
 
-  let supabaseResponse = NextResponse.next({ request });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
-    }
-  );
-
-  // Refresh session — keeps users logged in across navigations
-  await supabase.auth.getUser();
-
-  return supabaseResponse;
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
+    // Skip Next internals and static assets — only run on real page routes
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

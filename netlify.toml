@@ -8,6 +8,7 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Required plugin for Next.js App Router (API routes, server components)
+# Required plugin for Next.js App Router  
+# Pin to latest stable to ensure Next 16 middleware NFT support
 [[plugins]]
   package = "@netlify/plugin-nextjs"
