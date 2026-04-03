@@ -1,0 +1,13 @@
+# ── Netlify configuration for Grey Advisor (Next.js App Router) ──────
+# Docs: https://docs.netlify.com/integrations/frameworks/next-js/overview/
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Required plugin for Next.js App Router (API routes, server components)
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
