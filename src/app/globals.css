@@ -1,0 +1,215 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== WARM MINIMAL DESIGN TOKENS ===== */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-dm-serif);
+  --font-mono: var(--font-geist-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  /* Warm Minimal palette */
+  --background: #FAFAF8;
+  --foreground: #1C1917;
+
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+
+  --primary: #B45309;           /* Amber-700 */
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #92400E;    /* Amber-800 */
+
+  --secondary: #F5F3EE;
+  --secondary-foreground: #44403C;
+
+  --muted: #F0EDE6;
+  --muted-foreground: #78716C;  /* Stone-500 */
+
+  --accent: #B45309;
+  --accent-foreground: #FFFFFF;
+  --accent-glow: rgba(180, 83, 9, 0.08);
+
+  --border: #E5E0D8;
+  --input: #FFFFFF;
+  --ring: rgba(180, 83, 9, 0.25);
+  --destructive: #DC2626;
+  --radius: 1rem;
+
+  /* Card shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+    /* Warm ambient blobs */
+    background-image:
+      radial-gradient(ellipse 55% 45% at 0% 0%, rgba(251, 191, 36, 0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 100% 100%, rgba(252, 165, 40, 0.06) 0%, transparent 60%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #F5F3EE; }
+  ::-webkit-scrollbar-thumb { background: #D6D3D1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A8A29E; }
+}
+
+/* ===== CARD & UTILITY CLASSES ===== */
+@layer utilities {
+  /* Replaces .glass */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Replaces .glass-strong */
+  .card-elevated {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Legacy aliases — prevents breaking existing pages during migration */
+  .glass {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .glass-strong {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  .amber-glow {
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+
+  /* Legacy alias */
+  .violet-glow {
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #92400E 0%, #B45309 50%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(180, 83, 9, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(180, 83, 9, 0.30);
+  }
+
+  /* ── Shimmer skeleton ── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      #f5f3ee 0%,
+      #ede9e0 40%,
+      #f5f3ee 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Safe area padding for mobile nav (iPhone notch) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Give body bottom padding on mobile so content doesn't hide behind nav */
+  @media (max-width: 768px) {
+    body {
+      padding-bottom: 4rem;
+    }
+  }
+
+  /* Option card used in wizard */
+  .option-card {
+    background: #F5F3EE;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius);
+    transition: all 0.18s ease;
+    cursor: pointer;
+  }
+
+  .option-card:hover,
+  .option-card.selected {
+    background: #FFFFFF;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Scrollbar utilities ── */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
