@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -71,7 +71,7 @@ function pointInPolygon(point: [number, number], polygon: [number, number][]): b
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
-export default function MapSearchPage() {
+function MapSearchInner() {
   const searchParams = useSearchParams();
 
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -518,5 +518,20 @@ export default function MapSearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function MapSearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-[calc(100vh-3.5rem)] items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 rounded-full border-2 border-amber-700 border-t-transparent animate-spin mx-auto mb-3" />
+          <p className="text-sm text-stone-500">Loading map…</p>
+        </div>
+      </div>
+    }>
+      <MapSearchInner />
+    </Suspense>
   );
 }
