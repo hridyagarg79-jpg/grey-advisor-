@@ -134,7 +134,7 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight tracking-tight mb-5">
             Find your perfect{" "}
             <span className="text-gradient">property</span>
-            <br />with AI intelligence
+            <br />with Grey AI
           </h1>
           <p className="text-stone-500 text-base sm:text-lg max-w-2xl mx-auto mb-8">
             RERA-verified listings · Real-time market insights · Expert AI concierge · Zero advisory fee
