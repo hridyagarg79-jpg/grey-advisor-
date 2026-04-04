@@ -36,7 +36,11 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
 # .env.example is intentionally NOT ignored — it's the safe template
+
+# netlify local state (not needed in repo)
+.netlify/
 
 # vercel
 .vercel
