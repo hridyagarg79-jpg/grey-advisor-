@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Bot, MapPin, TrendingUp, Calculator, Shield, Sparkles,
-  ArrowRight, Building2, Search, ChevronRight, Loader2,
+  ArrowRight, Building2, Search, ChevronRight,
   Star, BarChart3, Zap, Home, CheckCircle2, Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -101,34 +101,14 @@ function FeaturedCard({ item, index }: { item: typeof FEATURED_SEEDS[0]; index: 
 export default function HomePage() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [activeCity, setActiveCity] = useState("Mumbai");
 
-  async function handleSearch(e: React.FormEvent) {
+  function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     const q = query.trim();
     if (!q) return;
-    setIsLoading(true);
-    try {
-      const res = await fetch("/api/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q }),
-      });
-      const data = await res.json();
-      const filters = data.filters || {};
-      const params = new URLSearchParams();
-      if (filters.city) params.set("city", filters.city);
-      if (filters.bedrooms) params.set("bedrooms", String(filters.bedrooms));
-      if (filters.budget) params.set("budget", String(filters.budget));
-      if (filters.type) params.set("type", filters.type);
-      params.set("q", q);
-      router.push(`/map?${params.toString()}`);
-    } catch {
-      router.push(`/concierge?q=${encodeURIComponent(q)}`);
-    } finally {
-      setIsLoading(false);
-    }
+    // Route directly to AI concierge — the ?q= param auto-fires the first message
+    router.push(`/concierge?q=${encodeURIComponent(q)}`);
   }
 
   return (
@@ -181,15 +161,15 @@ export default function HomePage() {
               </div>
               <button
                 type="submit"
-                disabled={!query.trim() || isLoading}
+                disabled={!query.trim()}
                 className={cn(
                   "flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all",
-                  query.trim() && !isLoading
+                  query.trim()
                     ? "bg-amber-700 text-white hover:bg-amber-800 shadow-sm"
                     : "bg-stone-100 text-stone-400 cursor-not-allowed"
                 )}
               >
-                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <><Search size={14} /> Search</>}
+                <Bot size={14} /> Ask Grey AI
               </button>
             </div>
           </form>
